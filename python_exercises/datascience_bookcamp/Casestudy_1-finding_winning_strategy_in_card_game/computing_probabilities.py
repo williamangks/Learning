@@ -35,7 +35,8 @@ def main():
   
   # Probability of a normal coin
   probability_heads = 1 / len(sample_space)
-  print("Probability of choosing heads is {}\n".format(probability_heads))
+  # print("Probability of choosing heads is {}\n".format(probability_heads))
+  assert probability_heads == 0.5
 
   # Detecting events using event conditions
   event_conditions = [is_heads_or_tails, is_heads, is_tails, is_neither]
@@ -54,6 +55,29 @@ def main():
     name = event_condition.__name__
     print("Probability of event arising from {} is {}\n".format(name, prob))
 
+  # Computing the sample space of children
+  possible_children = ["Boy", "Girl"]
+  sample_space = set()
+  for child1 in possible_children:
+    for child2 in possible_children:
+      for child3 in possible_children:
+        for child4 in possible_children:
+          outcome = (child1, child2, child3, child4)
+          sample_space.add(outcome)
+  
+  # Computing the sample space using product
+  from itertools import product
+  all_combinations = product(*(4 * [possible_children]))
+  assert set(all_combinations) == sample_space
+
+  # Passing repeat into product
+  sample_space_efficient = set(product(possible_children, repeat = 4))
+  assert sample_space == sample_space_efficient
+
+  # Computing the probability of two boys
+  def has_two_boys(outcome): return len([child for child in outcome if child == "Boy"]) == 2
+  prob = compute_event_probability(has_two_boys, sample_space)
+  print("Probability of 2 boys is {}".format(prob))
 
 
 if __name__ == "__main__":
